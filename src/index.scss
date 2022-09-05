@@ -1,0 +1,72 @@
+.leaflet-container {
+  width: 100%;
+}
+
+.main {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.resizeTable {
+  min-width: 650px;
+  border-right: 10px solid #7e92f6;
+}
+
+.active {
+  background-color: #7e92f6;
+}
+
+.order {
+  white-space: nowrap;
+  border-bottom: 1px solid #7e92f6;
+  padding: 15px;
+  cursor: pointer;
+  column-gap: 10px;
+  flex-wrap: nowrap !important;
+  &.active {
+    color: #ffffff;
+    &:hover {
+      background-color: #7e92f6;
+      color: #ffffff;
+    }
+  }
+  &:hover {
+    text-decoration: underline;
+    background-color: #e8e8e8;
+    color: #0000ffff;
+    transition: all 0.3s;
+  }
+}
+
+.columnItem {
+  white-space: nowrap;
+  overflow-x: auto;
+  padding: 5px;
+  width: 100%;
+  min-height: 65px !important;
+  &::-webkit-scrollbar {
+    height: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #13315e;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background-color: #f9f9fd;
+  }
+}
+
+.tableTitle {
+  margin: 0;
+  overflow-y: auto;
+  max-height: 25px;
+}
+
+.select {
+  border: none;
+  min-width: 100%;
+  color: #000000;
+}

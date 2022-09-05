@@ -1,12 +1,42 @@
 import { Col, Divider, Row, Typography } from "antd";
-import SelectTask from "./SelectTask";
+import { useState } from "react";
 
-const style = { padding: "8px 8px" };
+import SelectTask from "./SelectTask";
+import { useAppDispatch, useAppSelector } from "../hooks/appHooks";
+import { AddressType } from "../types/transportationType";
+import {
+  getLoadingCoordinates,
+  getUnLoadingCoordinates,
+} from "../redux/reducers/transportationSlice";
+import { transportationsSelector } from "../redux/selectors/selector";
 
 const CustomTable = () => {
+  const dispatch = useAppDispatch();
+  const transportations = useAppSelector(transportationsSelector);
+
+  const [activeTransportation, setActiveTransportation] = useState<number>(0);
+
+  const onClickTransport = (
+    loading: AddressType,
+    unloading: AddressType,
+    id: number
+  ) => {
+    dispatch(
+      getLoadingCoordinates({
+        address: loading,
+      })
+    );
+    dispatch(
+      getUnLoadingCoordinates({
+        address: unloading,
+      })
+    );
+    setActiveTransportation(id);
+  };
+
   return (
     <>
-      <Row align={"middle"} gutter={16} style={style}>
+      <Row align={"middle"} gutter={16} style={{ padding: "8px" }}>
         <Col span={8}>
           <Typography.Title className="tableTitle" level={5}>
             Заявки
@@ -24,21 +54,40 @@ const CustomTable = () => {
         </Col>
       </Row>
       <Divider style={{ margin: "10px 0" }} />
-      <Row className={`order`} align={"middle"} gutter={16}>
-        <Col className="columnItem">
-          <span className="orderTitle">
-            от: Место дуэли М.Ю. Лермонтова
-            <br />
-            до: Эолова арфа
-          </span>
-        </Col>
-        <Col className="columnItem">
-          <SelectTask />
-        </Col>
-        <Col className="columnItem">
-          <SelectTask />
-        </Col>
-      </Row>
+      {transportations.map((tr) => (
+        <Row
+          className={`order ${activeTransportation === tr.id ? "active" : ""}`}
+          align={"middle"}
+          key={tr.id}
+          gutter={16}
+        >
+          <Col
+            className="columnItem"
+            onClick={() =>
+              onClickTransport(tr.loadingAddress, tr.unloadingAddress, tr.id)
+            }
+          >
+            <span className="orderTitle">
+              от: {tr.loadingAddress.name}
+              <br />
+              до: {tr.unloadingAddress.name}
+            </span>
+          </Col>
+          <Col className="columnItem">
+            <SelectTask
+              transportation={tr}
+              loading
+              activeTransportation={activeTransportation}
+            />
+          </Col>
+          <Col className="columnItem">
+            <SelectTask
+              transportation={tr}
+              activeTransportation={activeTransportation}
+            />
+          </Col>
+        </Row>
+      ))}
     </>
   );
 };
