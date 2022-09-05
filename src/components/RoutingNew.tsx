@@ -1,5 +1,7 @@
 import { FC, useEffect } from "react";
 import { useMap } from "react-leaflet";
+import "leaflet-routing-machine";
+
 import { latLng, marker, Routing } from "leaflet";
 import { CoordinatesType } from "../types/transportationType";
 
@@ -16,12 +18,12 @@ const RoutingNew: FC<PropsType> = ({ coordinates }) => {
 
     const routingControl = Routing.control({
       waypoints: points,
-      addWaypoints: false,
       show: false,
       routeWhileDragging: false,
-      fitSelectedRoutes: true,
+      // fitSelectedRoutes: true,
+
       plan: Routing.plan(points, {
-        createMarker: function (i, wp) {
+        createMarker: (i, wp) => {
           return marker(wp.latLng, {
             draggable: false,
           })
@@ -32,6 +34,7 @@ const RoutingNew: FC<PropsType> = ({ coordinates }) => {
     }).addTo(map);
     return () => {
       map.removeControl(routingControl);
+      map.removeLayer(routingControl.getPlan());
     };
   }, [map, coordinates]);
   return null;
