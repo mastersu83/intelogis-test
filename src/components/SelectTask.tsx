@@ -40,8 +40,6 @@ const SelectTask: React.FC<PropsType> = ({
             id: transportation.id,
           })
         );
-
-    console.log(loading ? "yes" : "no");
   }
 
   return (
