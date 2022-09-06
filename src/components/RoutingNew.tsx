@@ -8,6 +8,7 @@ import { coordinatesSelector } from "../redux/selectors/selector";
 
 const RoutingNew = () => {
   const coordinates = useAppSelector(coordinatesSelector);
+  const pointName = ["Пункт погрузки", "Пункт разгрузки"];
 
   const map = useMap();
   let points = [latLng(coordinates.loading), latLng(coordinates.unloading)];
@@ -30,7 +31,7 @@ const RoutingNew = () => {
           return marker(wp.latLng, {
             draggable: false,
           })
-            .bindPopup(coordinates.name[i])
+            .bindPopup(`${pointName[i]}: ${coordinates.name[i]}`)
             .openPopup();
         },
       }),
