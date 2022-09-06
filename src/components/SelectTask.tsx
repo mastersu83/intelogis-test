@@ -1,11 +1,9 @@
-import { Select } from "antd";
 import React from "react";
-import { TransportationType } from "../types/transportationType";
+import { Select } from "antd";
 import { useAppDispatch, useAppSelector } from "../hooks/appHooks";
-import {
-  getLoadingCoordinates,
-  getUnLoadingCoordinates,
-} from "../redux/reducers/transportationSlice";
+
+import { TransportationType } from "../types/transportationType";
+import { setSelectCoordinates } from "../redux/reducers/transportationSlice";
 import { refactorCoordinates } from "../utils/refaktorCoordinates";
 import { points } from "../constants/addresses";
 import { coordinatesSelector } from "../redux/selectors/selector";
@@ -27,19 +25,13 @@ const SelectTask: React.FC<PropsType> = ({
   const coordinates = useAppSelector(coordinatesSelector);
 
   function handleChangeLoading(v: string) {
-    loading
-      ? dispatch(
-          getLoadingCoordinates({
-            address: refactorCoordinates(v),
-            id: transportation.id,
-          })
-        )
-      : dispatch(
-          getUnLoadingCoordinates({
-            address: refactorCoordinates(v),
-            id: transportation.id,
-          })
-        );
+    dispatch(
+      setSelectCoordinates({
+        address: refactorCoordinates(v),
+        id: transportation.id,
+        flag: loading,
+      })
+    );
   }
 
   return (

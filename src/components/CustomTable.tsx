@@ -4,10 +4,7 @@ import { useState } from "react";
 import SelectTask from "./SelectTask";
 import { useAppDispatch, useAppSelector } from "../hooks/appHooks";
 import { AddressType } from "../types/transportationType";
-import {
-  getLoadingCoordinates,
-  getUnLoadingCoordinates,
-} from "../redux/reducers/transportationSlice";
+import { setCoordinates } from "../redux/reducers/transportationSlice";
 import { transportationsSelector } from "../redux/selectors/selector";
 
 const CustomTable = () => {
@@ -22,13 +19,10 @@ const CustomTable = () => {
     id: number
   ) => {
     dispatch(
-      getLoadingCoordinates({
-        address: loading,
-      })
-    );
-    dispatch(
-      getUnLoadingCoordinates({
-        address: unloading,
+      setCoordinates({
+        loading,
+        unloading,
+        id,
       })
     );
     setActiveTransportation(id);
