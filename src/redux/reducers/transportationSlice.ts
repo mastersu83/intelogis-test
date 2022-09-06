@@ -76,59 +76,34 @@ const transportationSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    setSelectCoordinates(
+    getLoadingCoordinates(
       state: InitialStateType,
-      action: PayloadAction<{
-        address: AddressType;
-        id?: number;
-        flag?: boolean;
-      }>
+      action: PayloadAction<{ address: AddressType; id?: number }>
     ) {
-      action.payload.flag
-        ? (state.coordinates.loading = action.payload.address.coordinates)
-        : (state.coordinates.unloading = action.payload.address.coordinates);
-
-      state.coordinates.name[action.payload.flag ? 0 : 1] =
-        action.payload.address.name;
-
+      state.coordinates.loading = action.payload.address.coordinates;
+      state.coordinates.name[0] = action.payload.address.name;
       state.transportations = state.transportations.map((a) =>
         a.id === action.payload.id
-          ? action.payload.flag
-            ? { ...a, loadingAddress: action.payload.address }
-            : { ...a, unloadingAddress: action.payload.address }
+          ? { ...a, loadingAddress: action.payload.address }
           : a
       );
     },
-    setCoordinates(
+    getUnLoadingCoordinates(
       state: InitialStateType,
-      action: PayloadAction<{
-        loading: AddressType;
-        unloading: AddressType;
-        id: number;
-      }>
+      action: PayloadAction<{ address: AddressType; id?: number }>
     ) {
-      state.coordinates.loading = action.payload.loading.coordinates;
-      state.coordinates.unloading = action.payload.unloading.coordinates;
-
-      state.coordinates.name = [
-        action.payload.loading.name,
-        action.payload.loading.name,
-      ];
-
+      state.coordinates.unloading = action.payload.address.coordinates;
+      state.coordinates.name[1] = action.payload.address.name;
       state.transportations = state.transportations.map((a) =>
         a.id === action.payload.id
-          ? {
-              ...a,
-              unloadingAddress: action.payload.unloading,
-              loadingAddress: action.payload.loading,
-            }
+          ? { ...a, unloadingAddress: action.payload.address }
           : a
       );
     },
   },
 });
 
-export const { setSelectCoordinates, setCoordinates } =
+export const { getLoadingCoordinates, getUnLoadingCoordinates } =
   transportationSlice.actions;
 
 export default transportationSlice.reducer;
