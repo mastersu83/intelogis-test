@@ -7,10 +7,7 @@ import { TransportationType } from "../types/transportationType";
 import { refactorCoordinates } from "../utils/refaktorCoordinates";
 import { points } from "../constants/addresses";
 import { coordinatesSelector } from "../redux/selectors/selector";
-import {
-  getLoadingCoordinates,
-  getUnLoadingCoordinates,
-} from "../redux/reducers/transportationSlice";
+import { setSelectCoordinates } from "../redux/reducers/transportationSlice";
 
 const { Option } = Select;
 
@@ -29,19 +26,13 @@ const SelectTask: React.FC<PropsType> = ({
   const coordinates = useAppSelector(coordinatesSelector);
 
   function handleChangeLoading(v: string) {
-    loading
-      ? dispatch(
-          getLoadingCoordinates({
-            address: refactorCoordinates(v),
-            id: transportation.id,
-          })
-        )
-      : dispatch(
-          getUnLoadingCoordinates({
-            address: refactorCoordinates(v),
-            id: transportation.id,
-          })
-        );
+    dispatch(
+      setSelectCoordinates({
+        address: refactorCoordinates(v),
+        id: transportation.id,
+        flag: loading,
+      })
+    );
   }
 
   return (
